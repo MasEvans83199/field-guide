@@ -1,5 +1,10 @@
 <script setup>
 const {  pending, error, families, search, filter, selectedFamily } = useBirds()
+
+useSeoMeta({
+    title: "Birds - Bird Field Guide",
+    description: "Reference Guide to various bird species."
+})
 </script>
 
 <template>

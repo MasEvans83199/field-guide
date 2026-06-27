@@ -1,12 +1,17 @@
 <script setup>
-const site = 'Bird Field Guide'
-const tag = 'Log and review birds in the field.'
+const siteName = 'Bird Field Guide'
+const tagline = 'Log and review birds in the field.'
+
+useSeoMeta({
+    title: siteName,
+    description: tagline
+})
 </script>
 
 <template>
     <div>
-        <h1>{{ site }}</h1>
-        <p>{{ tag }}</p>
+        <h1>{{ siteName }}</h1>
+        <p>{{ tagline }}</p>
         <NuxtLink to="/birds">Browse species</NuxtLink>
     </div>
 </template>
