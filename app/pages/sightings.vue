@@ -1,5 +1,10 @@
 <script setup>
     const { sightings, addSighting } = useSightings()
+
+    useSeoMeta({
+        title: "Sightings - Bird Field Guide",
+        description: "Log/View your bird sightings."
+    })
 </script>
 
 <template>

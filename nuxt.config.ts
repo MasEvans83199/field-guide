@@ -2,5 +2,17 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@nuxt/content']
+  runtimeConfig: {
+    ebirdApiKey: '',
+    public: {
+      siteTitle: '',
+      supabaseUrl: '',
+      supabaseAnonKey: ''
+    }
+  },
+  routeRules: {
+    '/': { prerender: true },
+    '/birds/**': { prerender: true },
+    '/sightings': { ssr: true }
+  }
 })
