@@ -1,9 +1,23 @@
 <script setup>
+const props = defineProps ({
+    sighting: {
+        type: Object,
+        default: null
+    }
+})
     const form = reactive({
         birdName: '',
         date: '',
         notes: ''
     })
+
+    watch(() => props.sighting, (newSighting) => {
+        form.birdName = newSighting?.birdName ?? '',
+        form.date = newSighting?.date ?? '',
+        form.notes = newSighting?.notes ?? ''
+    }, { immediate: true })
+
+    const isEditing = computed(() => !!props.sighting)
 
     const emit = defineEmits(['submit'])
 
@@ -11,14 +25,17 @@
         if (!form.birdName || !form.date)
             return
         emit('submit', {
+            id: props.sighting?.id,
             birdName: form.birdName,
             date: form.date,
             notes: form.notes
         })
 
-        form.birdName = ''
-        form.date = ''
-        form.notes = ''
+        if (!isEditing.value) {
+            form.birdName = ''
+            form.date = ''
+            form.notes = ''
+        }
     }
 </script>
 
@@ -36,6 +53,6 @@
             <label>Notes</label>
             <input v-model="form.notes" type="text" />
         </div>
-        <button @click="handleSubmit">Log sighting</button>
+        <button @click="handleSubmit">{{ isEditing ? 'Save' : 'Log sighting' }}</button>
     </div>
 </template>

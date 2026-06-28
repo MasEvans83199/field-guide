@@ -1,4 +1,4 @@
-import { getSupabaseClient } from "../utils/supabase"
+import { getSupabaseClient } from "../../utils/supabase"
 
 export default defineEventHandler(async (event) => {
     const supabase = getSupabaseClient(event)
@@ -13,6 +13,7 @@ export default defineEventHandler(async (event) => {
 
     return data.map(s => ({
         id: s.id,
+        userId: s.user_id,
         birdName: s.bird_name,
         date: s.date,
         notes: s.notes,

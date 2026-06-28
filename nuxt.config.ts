@@ -2,12 +2,20 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+  modules: ['@nuxtjs/supabase'],
   runtimeConfig: {
     ebirdApiKey: '',
     public: {
       siteTitle: '',
       supabaseUrl: '',
       supabaseAnonKey: ''
+    }
+  },
+  supabase: {
+    redirectOptions: {
+      login: '/login',
+      callback: '/confirm',
+      exclude: ['/birds', '/birds/**', '/']
     }
   },
   routeRules: {

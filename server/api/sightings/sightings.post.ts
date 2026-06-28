@@ -1,8 +1,12 @@
-import { getSupabaseClient } from "../utils/supabase"
+import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
-    const supabase = getSupabaseClient(event)
+    const supabase = await serverSupabaseClient(event)
+    const user = await serverSupabaseUser(event)
     const body = await readBody(event)
+
+    if (!user)
+        throw createError({ statusCode: 401, statusMessage: 'Must be logged in to log sightings' })
     
     if (!body.birdName || !body.date) {
         throw createError({ statusCode: 400, message: 'birdName and date are required' })
@@ -11,6 +15,7 @@ export default defineEventHandler(async (event) => {
     const { data, error } = await supabase
         .from('sightings')
         .insert({
+            user_id: user.sub,
             bird_name: body.birdName,
             date: body.date,
             notes: body.notes ?? ''
@@ -21,6 +26,10 @@ export default defineEventHandler(async (event) => {
     if (error)
         throw createError({ statusCode: 500, statusMessage: error.message })
 
-    return data
+    return {
+        id: data.id,
+        birdName: data.bird_name,
+        date: data.date,
+        notes: data.notes
+    }
 })
-
