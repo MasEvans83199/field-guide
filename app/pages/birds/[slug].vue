@@ -1,4 +1,6 @@
 <script setup>
+import BirdCarousel from '~/components/BirdCarousel.vue'
+
 definePageMeta({
     layout: 'detail'
 })
@@ -17,6 +19,7 @@ useSeoMeta({
 
 <template>
     <div>
+        <BirdCarousel :images="bird.images" :alt="bird.name" />
         <h1>{{ bird.name }}</h1>
         <p>{{ bird.family }} - {{ bird.region }}</p>
         <p>{{ bird.description }}</p>

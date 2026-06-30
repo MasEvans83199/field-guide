@@ -1,18 +1,36 @@
-import { getSupabaseClient } from "~~/server/utils/supabase"
+import { serverSupabaseClient } from "#supabase/server"
 
 export default defineEventHandler(async (event) => {
-  const supabase = getSupabaseClient(event)
-  const slug = getRouterParam(event, 'slug')
+  const supabase = await serverSupabaseClient(event)
 
-  const { data, error } = await supabase
+  const slugParam = getRouterParam(event, 'slug')
+  const slug = String(slugParam)
+
+  if (!slugParam)
+    throw createError ({ statusCode: 400, statusMessage: 'Invalid slug'})
+
+  const { data: bird, error } = await supabase
     .from('birds')
     .select('*')
     .eq('slug', slug)
     .single()
 
-  if (error || !data) {
-    throw createError({ statusCode: 404, message: 'Bird not found' })
+  if (error || !bird) {
+    throw createError({ statusCode: 404, statusMessage: 'Bird not found' })
   }
 
-  return data
+  const { data: images } = await supabase
+    .from('bird_images')
+    .select('storage_path')
+    .eq('bird_id', bird.id)
+    .order('position', { ascending: true })
+
+    const imageUrl = (images ?? []).map(img => 
+      supabase.storage.from('bird-images').getPublicUrl(img.storage_path).data.publicUrl
+    )
+
+  return {
+    ...bird,
+    images: imageUrl
+  }
 })

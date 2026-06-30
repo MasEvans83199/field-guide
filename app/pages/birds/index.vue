@@ -12,7 +12,7 @@ useSeoMeta({
         <h1>Browse Birds</h1>
         <div v-if="pending">Loading...</div>
         <div v-else-if="error">Error</div>
-        <div v-else>
+        <div v-else class="bird-page">
             <input v-model="search" type="text" placeholder="Search" />
             <select v-model="selectedFamily">
                 <option value="">All</option>
@@ -24,3 +24,9 @@ useSeoMeta({
         </div>
     </div>
 </template>
+
+<style scoped>
+.bird-page{
+    align-items: center;
+}
+</style>
