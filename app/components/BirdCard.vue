@@ -8,38 +8,15 @@
 </script>
 
 <template>
-    <div class="bird-card">
-        <div class="card-image">
-            <img v-if="bird.imageUrl" :src="bird.imageUrl" :alt="bird.name" />
-            <div v-else class="no-image">No image</div>
+    <NuxtLink class="group block rounded-lg border border-gray-200 overflow-hidden bg-white hover:shadow-md transition-shadow" :to="`/birds/${bird.slug}`">
+        <div class="w-full h-[180px] overflow-hidden bg-gray-100">
+            <img class="w-full h-full object-cover group-hover:scale-105 transition-transform" v-if="bird.imageUrl" :src="bird.imageUrl" :alt="bird.name" />
+            <div v-else class="size-full flex items-center justify-center text-gray-400 text-sm">No image</div>
         </div>
-        <h2>{{ bird.name }}</h2>
-        <p>{{ bird.family }} - {{ bird.region }}</p>
-        <p>{{ bird.description }}</p>
-        <NuxtLink :to="`/birds/${bird.slug}`">More...</NuxtLink>
-    </div>
+        <div class="p-4">
+            <h2 class="font-semibold text-gray-900">{{ bird.name }}</h2>
+            <p class="text-sm text-gray-500 mb-2">{{ bird.family }} - {{ bird.region }}</p>
+            <p class="text-sm text-gray-600 line-clamp-2">{{ bird.description }}</p> 
+        </div>
+    </NuxtLink>
 </template>
-
-<style scoped>
-    .card-image {
-        width: 100%;
-        height: 180px;
-        overflow: hidden;
-        margin-bottom: 0.75rem;
-    }
-    .card-image img {
-        width: 10%;
-        height: fit-content;
-        object-fit: cover;
-    }
-    .no-image {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #1a1a1a;
-        color: #555;
-        font-size: 0.85rem;
-    }
-</style>
